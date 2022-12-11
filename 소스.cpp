@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAX 50 // ÃÖ´ë ÇĞ»ı ¼ö
+#define MAX 50 // ìµœëŒ€ í•™ìƒ ìˆ˜
 #define STUDENTNUM_LEN 6
 
 struct stu_score {
@@ -16,22 +16,22 @@ struct sum_mean {
 	int mean;
 };
 
-// Á¡¼ö¸¦ ±¸Á¶Ã¼ ¹è¿­¿¡ ÀúÀå
+// ì ìˆ˜ë¥¼ êµ¬ì¡°ì²´ ë°°ì—´ì— ì €ì¥
 struct stu_score scores[MAX];
 struct stu_score scores_read[MAX];
 
 struct sum_mean sum_means[MAX];
 
 /*
-	ÇĞ»ı ¹øÈ£(¾ËÆÄºª ¹× ¼ıÀÚ 6±ÛÀÚ), ¼öÇĞ Á¡¼ö(0~100), ¿µ¾îÁ¡¼ö(0~100)¸¦ ÀÔ·Â¹Ş¾Æ
-	ÀÔ·Â, »èÁ¦, Á¾·á¸¦ ¼öÇàÇÏ´Â ÇÁ·Î±×·¥
+	í•™ìƒ ë²ˆí˜¸(ì•ŒíŒŒë²³ ë° ìˆ«ì 6ê¸€ì), ìˆ˜í•™ ì ìˆ˜(0~100), ì˜ì–´ì ìˆ˜(0~100)ë¥¼ ì…ë ¥ë°›ì•„
+	ì…ë ¥, ì‚­ì œ, ì¢…ë£Œë¥¼ ìˆ˜í–‰í•˜ëŠ” í”„ë¡œê·¸ë¨
 */
 
-void printMenu(); // ¸Ş´º Ãâ·Â
+void printMenu(); // ë©”ë‰´ ì¶œë ¥
 
-void insert();	// ÇĞ»ı Á¤º¸ ÀÔ·Â - student.txt¿Í score.bin¿¡ ¹İ¿µ
-void del();		// ÇĞ»ı Á¤º¸ »èÁ¦ - student.txt¿Í score.bin¿¡ ¹İ¿µ
-void quit();	// ÇÁ·Î±×·¥ Á¾·á - scoe.binÀÇ ¼öÇĞ Á¡¼ö ÃÑÇÕ ¹× Æò±Õ Ãâ·Â
+void insert();	// í•™ìƒ ì •ë³´ ì…ë ¥ - student.txtì™€ score.binì— ë°˜ì˜
+void del();		// í•™ìƒ ì •ë³´ ì‚­ì œ - student.txtì™€ score.binì— ë°˜ì˜
+void quit();	// í”„ë¡œê·¸ë¨ ì¢…ë£Œ - scoe.binì˜ ìˆ˜í•™ ì ìˆ˜ ì´í•© ë° í‰ê·  ì¶œë ¥
 
 int func(int (*) (int, int));
 
@@ -39,7 +39,7 @@ int sum_func(int, int);
 int mean_func(int, int);
 
 
-// ¹öÆÛ Å¬¸®¾î¿ë ÇÔ¼ö
+// ë²„í¼ í´ë¦¬ì–´ìš© í•¨ìˆ˜
 void buffer_clear();
 
 int i = 0;
@@ -47,7 +47,7 @@ int count = 0;
 
 int main()
 {
-	printf("ÇĞ»ı Á¤º¸¸¦ ÀÔ·Â¹Ş¾Æ ÀÔ·Â, »èÁ¦, Á¾·á¸¦ ¼öÇàÇÏ´Â ÇÁ·Î±×·¥ÀÔ´Ï´Ù.\n");
+	printf("í•™ìƒ ì •ë³´ë¥¼ ì…ë ¥ë°›ì•„ ì…ë ¥, ì‚­ì œ, ì¢…ë£Œë¥¼ ìˆ˜í–‰í•˜ëŠ” í”„ë¡œê·¸ë¨ì…ë‹ˆë‹¤.\n");
 	printf("----------------------------------------------------------------------------------\n\n");
 
 	char menu;
@@ -72,7 +72,7 @@ int main()
 		}
 		default:
 		{
-			printf("´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä.\n");
+			printf("ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”.\n");
 			break;
 		}
 		}
@@ -89,7 +89,7 @@ int main()
 
 void printMenu()
 {
-	printf("¸Ş´º¸¦ ÀÔ·ÂÇÏ¼¼¿ä: i(ÀÔ·Â), d(»èÁ¦), q(Á¾·á)\n");
+	printf("ë©”ë‰´ë¥¼ ì…ë ¥í•˜ì„¸ìš”: i(ì…ë ¥), d(ì‚­ì œ), q(ì¢…ë£Œ)\n");
 	printf(">> ");
 }
 
@@ -108,31 +108,22 @@ void insert()
 
 	i = 0;
 
-	printf("[ÀÔ·Â] ÇĞ»ı ¹øÈ£, ¼öÇĞ Á¡¼ö, ¿µ¾îÁ¡¼ö¸¦ ºóÄ­À¸·Î ±¸º°ÇÏ¸ç ÀÔ·ÂÇÏ¼¼¿ä. Âü°í·Î, °¢ ÁÙÀÇ ³¡Àº ÁÙ¹Ù²Ş ¹®ÀÚ '\\n'·Î ³¡³³´Ï´Ù.\n");
+	printf("[ì…ë ¥] í•™ìƒ ë²ˆí˜¸, ìˆ˜í•™ ì ìˆ˜, ì˜ì–´ì ìˆ˜ë¥¼ ë¹ˆì¹¸ìœ¼ë¡œ êµ¬ë³„í•˜ë©° ì…ë ¥í•˜ì„¸ìš”. ì°¸ê³ ë¡œ, ê° ì¤„ì˜ ëì€ ì¤„ë°”ê¿ˆ ë¬¸ì '\\n'ë¡œ ëë‚©ë‹ˆë‹¤.\n");
 	
 	while (1) {
-		// buffer_clear(); // ¿©±â´Ù ÇÏ¸é ¾ÈµÊ!
-		printf("ÇĞ»ı ¹øÈ£: ¾ËÆÄºª ¹× ¼ıÀÚ 6±ÛÀÚ(0ÀÌ¸é Á¾·á)\n");
+		// buffer_clear(); // ì—¬ê¸°ë‹¤ í•˜ë©´ ì•ˆë¨!
+		printf("í•™ìƒ ë²ˆí˜¸: ì•ŒíŒŒë²³ ë° ìˆ«ì 6ê¸€ì(0ì´ë©´ ì¢…ë£Œ)\n");
 		printf(">> ");
-								// + 1 ÇÊ¿ä
+								// + 1 í•„ìš”
 		fgets(scores[i].stu_num, STUDENTNUM_LEN + 1, stdin);
-		// ¿©±â¼­ "0"ÀÌ stu_num¿¡ ÀúÀåµÇ´õ¶óµµ ÆÄÀÏ¿¡ ¾²±â Àü¿¡ ³ª°¡´Ï ¹®Á¦ X
-
-		// -> ÀÌ°Å Á¦´ë·Î µ¿ÀÛÀ» ¾ÈÇÔ ???????
-		// "0" ´ë½Å "0\n"À» ³Ö¾î¾ß Àß µ¿ÀÛ - WHY?????
-
-		/*******************************************
-		*
-		* \0ÀÌ ¾Æ´Ï¶ó \nÀÌ¾úÀİ¾Æ¾Æ¾Æ¾Æ¾Æ¾Æ¾Æ¤¿¾Æ¾Æ¤¿
-		*
-		********************************************/
+		// ì—¬ê¸°ì„œ "0"ì´ stu_numì— ì €ì¥ë˜ë”ë¼ë„ íŒŒì¼ì— ì“°ê¸° ì „ì— ë‚˜ê°€ë‹ˆ ë¬¸ì œ X
 
 		if (strcmp(scores[i].stu_num, "0\n") == 0) {
 			break;
 		}
 
 
-		printf("¼öÇĞÁ¡¼ö, ¿µ¾îÁ¡¼öÀ» ÀÔ·ÂÇÏ¼¼¿ä : ");
+		printf("ìˆ˜í•™ì ìˆ˜, ì˜ì–´ì ìˆ˜ì„ ì…ë ¥í•˜ì„¸ìš” : ");
 		scanf_s("%d %d", &scores[i].math, &scores[i].english);
 
 		fprintf(student, "%s %d %d\n", scores[i].stu_num, scores[i].math, scores[i].english);
@@ -140,7 +131,7 @@ void insert()
 		sum_means[i].sum = func(sum_func);
 		sum_means[i].mean = func(mean_func);
 
-		// (ÇÑ¹ø¿¡ ÀúÀåÇØµµ µÇÁö¸¸) ÇÑ¸í¾¿ ÀúÀå
+		// (í•œë²ˆì— ì €ì¥í•´ë„ ë˜ì§€ë§Œ) í•œëª…ì”© ì €ì¥
 		fwrite(&sum_means[i], sizeof(struct sum_mean), 1, score);
 
 		count = i;
@@ -165,8 +156,8 @@ void del()
 		return;
 	}
 
-	printf("[»èÁ¦] »èÁ¦ÇÒ ÇĞ»ı ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä.\n");
-	printf("ÇĞ»ı ¹øÈ£>> ");
+	printf("[ì‚­ì œ] ì‚­ì œí•  í•™ìƒ ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”.\n");
+	printf("í•™ìƒ ë²ˆí˜¸>> ");
 	char stu_num[MAX] = "";
 	fgets(stu_num, STUDENTNUM_LEN + 1, stdin);
 	buffer_clear();
@@ -177,7 +168,7 @@ void del()
 
 	i = 0;
 	int j = 0;
-										//  &scores_read[i].stu_numº¸´Ù´Â ÀÌ°Ô ¸ÂÀ» µí
+										//  &scores_read[i].stu_numë³´ë‹¤ëŠ” ì´ê²Œ ë§ì„ ë“¯
 	//	while (fscanf_s(student, "%s %d %d", scores_read[i].stu_num, STUDENTNUM_LEN, &scores_read[i].math, &scores_read[i].english) != EOF) {
 //  while (fgets(str, MAX, student) != 0) {
 //	 	sscanf_s(str, "%s %d %d", scores_read[i].stu_num, STUDENTNUM_LEN, &scores_read[i].math, &scores_read[i].english);
@@ -199,7 +190,7 @@ void del()
 
 
 	if (!found) {
-		printf("»èÁ¦ÇÒ ÇĞ»ı Á¤º¸°¡ ¾ø½À´Ï´Ù.\n");
+		printf("ì‚­ì œí•  í•™ìƒ ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤.\n");
 
 		fclose(student);
 		return;
@@ -208,7 +199,7 @@ void del()
 	fclose(student);
 
 	/*
-	student.txt¿Í score.bin¿¡ º¯°æ»çÇ× ¹İ¿µ
+	student.txtì™€ score.binì— ë³€ê²½ì‚¬í•­ ë°˜ì˜
 	*/
 
 	FILE* score = NULL;
@@ -265,7 +256,7 @@ void quit()
 
 	// fread(&sum_means, sizeof(struct sum_mean), MAX, score);
 
-	// ÀÌ·¯¸é sum_means[0]¸¸ º¯°æµÈ´Ù!
+	// ì´ëŸ¬ë©´ sum_means[0]ë§Œ ë³€ê²½ëœë‹¤!
 	while(fread(&sum_means, sizeof(struct sum_mean), 1, score) != 0 ){
 		sum += sum_means[0].sum;
 		cnt++;
@@ -276,9 +267,9 @@ void quit()
 
 	fclose(score);
 
-	printf("ÇĞ»ıµéÀÇ Á¡¼ö ÃÑÇÕÀº %dÁ¡ÀÌ¸ç, Æò±ÕÀº %dÁ¡ÀÔ´Ï´Ù.\n", sum, mean);
-	printf("ÇÕ ÇÔ¼ö ÁÖ¼Ò : %p \t Æò±Õ ÇÔ¼ö ÁÖ¼Ò : %p \n", sum_func, mean_func);
-	printf("[Á¾·á] ÇÁ·Î±×·¥À» Á¾·áÇÕ´Ï´Ù.\n");
+	printf("í•™ìƒë“¤ì˜ ì ìˆ˜ ì´í•©ì€ %dì ì´ë©°, í‰ê· ì€ %dì ì…ë‹ˆë‹¤.\n", sum, mean);
+	printf("í•© í•¨ìˆ˜ ì£¼ì†Œ : %p \t í‰ê·  í•¨ìˆ˜ ì£¼ì†Œ : %p \n", sum_func, mean_func);
+	printf("[ì¢…ë£Œ] í”„ë¡œê·¸ë¨ì„ ì¢…ë£Œí•©ë‹ˆë‹¤.\n");
 }
 
 
